@@ -1,4 +1,38 @@
-function rightContent() {
+//匯入工具組
+import React, { useState, useEffect } from "react";
+import {
+  Check,
+  Plus,
+  MoreHorizontal,
+  Play,
+  Pause,
+  RotateCcw,
+  X,
+} from "lucide-react";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+function RightContent() {
+  //連接後端
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/api/todos`)
+      .then((response) => {
+        const apiResponse = response.data; // 這是你後端包裝的 ApiResponse
+        if (apiResponse.code === 200) {
+          setTasks(apiResponse.data); // 把回傳的 tasks 丟進去
+        } else {
+          console.error("撈任務失敗：", apiResponse.message);
+        }
+      })
+      .catch((error) => {
+        console.error("後端爛掉了：", error);
+      });
+  }, []);
+
   // 番茄鐘完成數量追蹤
   const [completedPomodoros, setCompletedPomodoros] = useState(0);
   const [newTaskInput, setNewTaskInput] = useState("");
@@ -288,4 +322,4 @@ function rightContent() {
   );
 }
 
-export default rightContent;
+export default RightContent;

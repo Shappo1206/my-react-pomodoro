@@ -1,4 +1,5 @@
 //匯入工具組
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import {
   Check,
@@ -39,6 +40,17 @@ export default function PomodoroApp() {
       ],
     },
   ]);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:8080/api/todos")
+  //     .then((response) => {
+  //       console.log("後端回傳：", response.data);
+  //       setsetTasks(response.data.data); // ← 注意：你是包在 payload 裡！
+  //     })
+  //     .catch((error) => {
+  //       console.error("查詢失敗：", error);
+  //     });
+  // }, []);
 
   // 番茄鐘完成數量追蹤
   const [completedPomodoros, setCompletedPomodoros] = useState(0);

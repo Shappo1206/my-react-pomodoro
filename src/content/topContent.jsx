@@ -27,4 +27,4 @@ function topContent() {
   );
 }
 
-export default mainContent;
+export default topContent;

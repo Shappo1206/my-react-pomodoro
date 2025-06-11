@@ -1,0 +1,29 @@
+/* src/input.css */
+
+/* 1. 引入 Tailwind 的核心指令 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 2. 您可以在這裡添加任何自定義的 CSS (非 Tailwind utility classes) */
+/* 例如，如果您有特殊的字體或全域的 body 樣式 */
+body {
+  font-family: 'Noto Sans TC', sans-serif; /* 假設您引入了這個字體 */
+  color: #333;
+}
+
+/* 3. 如果您有自定義的組件類別，可以這樣定義 */
+@layer components {
+  .card {
+    @apply bg-white p-6 rounded-lg shadow-md;
+  }
+}
+
+/* 4. 如果您需要覆蓋某些 Tailwind 的預設樣式，但這種情況比較少見 */
+/* 盡量還是透過修改 tailwind.config.js 或直接使用 utility class 覆蓋 */
+/* 範例 (不建議常用): */
+/*
+h1 {
+  @apply text-5xl font-extrabold;
+}
+*/

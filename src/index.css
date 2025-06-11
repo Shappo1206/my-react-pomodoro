@@ -25,9 +25,17 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  justify-content: center; /* 改：橫向置中 */
+  align-items: flex-start;  /* 改：不需要垂直置中 */
   min-width: 320px;
   min-height: 100vh;
+  background-color: #f9fafb; /* 淺灰背景更適合你的版型 */
+}
+
+#root {
+  width: 100%;
+  max-width: 1280px; /* 可以依需求調整，例如 1440px、1600px */
+  padding: 1rem; /* 給左右留點內距，避免貼邊 */
 }
 
 h1 {

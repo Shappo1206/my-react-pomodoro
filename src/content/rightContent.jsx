@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Check, Plus, MoreHorizontal, X } from "lucide-react";
 
-// ✅ 你的後端 API 位置
 const API_URL = "http://localhost:8080";
 
 function RightContent() {
@@ -10,7 +9,7 @@ function RightContent() {
   const [newTaskInput, setNewTaskInput] = useState("");
   const [showAddTask, setShowAddTask] = useState(false);
 
-  // ✅ 核心整合：從後端撈取資料並轉換格式
+  // 撈取主任務，並自動塞入假子任務
   useEffect(() => {
     axios
       .get(`${API_URL}/api/todos`)
@@ -20,9 +19,13 @@ function RightContent() {
           id: todo.todo_id,
           name: todo.title,
           description: todo.description,
-          completed: todo.completed === 1, // 從後端 0/1 轉成 true/false
+          completed: todo.completed === 1,
           estimatePomodoro: todo.estimate_pomodoro,
-          subtasks: [], // 目前後端沒有提供子任務，先預留空陣列
+          // 🔥 假資料塞入兩個子任務
+          subtasks: [
+            { id: `${todo.todo_id}-1`, name: "項目1", completed: false },
+            { id: `${todo.todo_id}-2`, name: "項目2", completed: false },
+          ],
         }));
         setTasks(convertedTasks);
       })
@@ -31,7 +34,6 @@ function RightContent() {
       });
   }, []);
 
-  // ✅ 切換任務完成狀態（目前只有本地切換）
   const toggleTaskCompletion = (taskId) => {
     setTasks(
       tasks.map((task) =>
@@ -40,7 +42,24 @@ function RightContent() {
     );
   };
 
-  // ✅ 新增任務（目前只在前端暫存，還沒串後端）
+  const toggleSubtaskCompletion = (taskId, subtaskId) => {
+    setTasks(
+      tasks.map((task) => {
+        if (task.id === taskId) {
+          return {
+            ...task,
+            subtasks: task.subtasks.map((subtask) =>
+              subtask.id === subtaskId
+                ? { ...subtask, completed: !subtask.completed }
+                : subtask
+            ),
+          };
+        }
+        return task;
+      })
+    );
+  };
+
   const addNewTask = () => {
     if (newTaskInput.trim()) {
       const newTask = {
@@ -49,7 +68,10 @@ function RightContent() {
         description: "",
         completed: false,
         estimatePomodoro: 0,
-        subtasks: [],
+        subtasks: [
+          { id: `${Date.now()}-1`, name: "項目1", completed: false },
+          { id: `${Date.now()}-2`, name: "項目2", completed: false },
+        ],
       };
       setTasks([...tasks, newTask]);
       setNewTaskInput("");
@@ -60,14 +82,9 @@ function RightContent() {
   const deleteTask = (taskId) => {
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
-  // -------------------------------------------------------------------
-  // -------------------------------------------------------------------
-  // -------------------------------------------------------------------
-  // -------------------------------------------------------------------
 
   return (
     <div className="bg-white rounded-3xl p-6 shadow-sm border-2 border-gray-200">
-      {/* 任務區塊標題列 */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <button
@@ -89,7 +106,6 @@ function RightContent() {
         </div>
       </div>
 
-      {/* 新增任務輸入框 */}
       {showAddTask && (
         <div className="mb-4 p-3 bg-gray-50 rounded-xl border-2 border-gray-200">
           <div className="flex gap-2">
@@ -121,7 +137,6 @@ function RightContent() {
         </div>
       )}
 
-      {/* 任務列表 */}
       <div className="space-y-4 max-h-96 overflow-y-auto">
         {tasks.map((task) => (
           <div key={task.id} className="space-y-2">
@@ -137,48 +152,36 @@ function RightContent() {
                 {task.completed && <Check size={16} />}
               </button>
 
-              <input
-                type="text"
-                value={task.name}
-                onChange={(e) => {
-                  setTasks(
-                    tasks.map((t) =>
-                      t.id === task.id ? { ...t, name: e.target.value } : t
-                    )
-                  );
-                }}
-                className={`flex-1 bg-transparent font-medium outline-none ${
-                  task.completed
-                    ? "text-gray-500 line-through"
-                    : "text-gray-900"
-                }`}
-              />
-
-              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  onClick={() => addSubtask(task.id)}
-                  className="p-1 hover:bg-gray-200 rounded text-gray-500 hover:text-gray-700"
-                  title="新增子任務"
+              <div className="flex-1">
+                <div
+                  className={`font-medium ${
+                    task.completed
+                      ? "text-gray-500 line-through"
+                      : "text-gray-900"
+                  }`}
                 >
-                  <Plus size={16} />
-                </button>
-                <button
-                  onClick={() => deleteTask(task.id)}
-                  className="p-1 hover:bg-red-100 rounded text-gray-500 hover:text-red-600"
-                  title="刪除任務"
-                >
-                  <X size={16} />
-                </button>
+                  {task.name}
+                </div>
+                <div className="text-sm text-gray-500">
+                  {task.description}（預估番茄：{task.estimatePomodoro}）
+                </div>
               </div>
+
+              <button
+                onClick={() => deleteTask(task.id)}
+                className="p-1 hover:bg-red-100 rounded text-gray-500 hover:text-red-600"
+              >
+                <X size={16} />
+              </button>
             </div>
 
-            {/* 子任務區塊 */}
+            {/* 🔥 子任務區塊 */}
             {task.subtasks.length > 0 && (
               <div className="ml-9 space-y-2">
                 {task.subtasks.map((subtask) => (
                   <div
                     key={subtask.id}
-                    className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg border border-gray-200 group"
+                    className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg border border-gray-200"
                   >
                     <button
                       onClick={() =>
@@ -192,53 +195,15 @@ function RightContent() {
                     >
                       {subtask.completed && <Check size={12} />}
                     </button>
-
-                    <input
-                      type="text"
-                      value={subtask.name}
-                      onChange={(e) => {
-                        setTasks(
-                          tasks.map((t) =>
-                            t.id === task.id
-                              ? {
-                                  ...t,
-                                  subtasks: t.subtasks.map((st) =>
-                                    st.id === subtask.id
-                                      ? { ...st, name: e.target.value }
-                                      : st
-                                  ),
-                                }
-                              : t
-                          )
-                        );
-                      }}
-                      className={`flex-1 bg-transparent outline-none ${
+                    <div
+                      className={`flex-1 ${
                         subtask.completed
                           ? "text-gray-500 line-through"
                           : "text-gray-700"
                       }`}
-                    />
-
-                    <button
-                      onClick={() => {
-                        setTasks(
-                          tasks.map((t) =>
-                            t.id === task.id
-                              ? {
-                                  ...t,
-                                  subtasks: t.subtasks.filter(
-                                    (st) => st.id !== subtask.id
-                                  ),
-                                }
-                              : t
-                          )
-                        );
-                      }}
-                      className="p-1 hover:bg-red-100 rounded text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
-                      title="刪除子任務"
                     >
-                      <X size={14} />
-                    </button>
+                      {subtask.name}
+                    </div>
                   </div>
                 ))}
               </div>

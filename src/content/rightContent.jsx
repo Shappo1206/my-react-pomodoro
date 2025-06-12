@@ -83,6 +83,10 @@ function RightContent() {
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
 
+  //----------------------------------------------------------------------
+  //----------------------------------------------------------------------
+  //----------------------------------------------------------------------
+  //----------------------------------------------------------------------
   return (
     <div className="bg-white rounded-3xl p-6 shadow-sm border-2 border-gray-200">
       <div className="flex items-center justify-between mb-6">

@@ -1,6 +1,6 @@
 import TopContent from "./content/TopContent";
-import LeftContent from "./content/LeftContent";
-import RightContent from "./content/RightContent";
+import LeftContent from "../content/LeftContent";
+import RightContent from "../content/RightContent";
 
 function MainPage() {
   return (

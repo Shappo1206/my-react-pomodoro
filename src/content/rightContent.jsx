@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Check, Plus, MoreHorizontal, X } from "lucide-react";
 
+//URL 不要散落各地，統一集中在常數。
 const API_URL = "http://localhost:8080";
 
 function RightContent() {
@@ -88,6 +89,7 @@ function RightContent() {
   //----------------------------------------------------------------------
   //----------------------------------------------------------------------
   return (
+    //右側最大版面的div
     <div className="bg-white rounded-3xl p-6 shadow-sm border-2 border-gray-200">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">

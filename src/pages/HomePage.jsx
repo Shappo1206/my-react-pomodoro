@@ -1,6 +1,6 @@
 // src/pages/HomePage.jsx
 import React from "react";
-import TimerDisplay from "../components/timer/TimerDispaly.jsx"; 
+import TimerDisplay from "../components/timer/TimerDisplay.jsx"; // 修正拼寫錯誤
 import TimerTabs from "../components/timer/TimerTabs.jsx";     
 import TodoList from "../components/todo/TodoList.jsx";       
 import AddTodoButton from "../components/todo/AddTodoButton.jsx"; 
@@ -34,6 +34,9 @@ export default function HomePage() {
   if (loading) return <div className="text-center mt-10">載入中...</div>;
   if (error) return <div className="text-center mt-10 text-red-500">載入失敗: {error.message}</div>;
 
+  // 確保 todos 是陣列
+  const safeTodos = todos || [];
+
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
@@ -60,7 +63,7 @@ export default function HomePage() {
           {/* Todos Section */}
           <div className="flex flex-col">
             <TodoList
-              todos={todos}
+              todos={safeTodos}
               completedPomodoros={completedPomodoros}
               toggleTodoCompletion={toggleTodoCompletion}
               toggleSubtodoCompletion={toggleSubtodoCompletion}

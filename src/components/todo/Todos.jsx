@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Check, Plus, MoreHorizontal, Trash2 } from 'lucide-react';
-import { useTodos } from '../../hooks/UseTodos';
+import { useTodos } from '../../hooks/useTodos';
 
 export default function Todos() {
   const { todos, loading, create, update, remove } = useTodos();

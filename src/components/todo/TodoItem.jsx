@@ -3,6 +3,9 @@ import React from "react";
 import { Check } from "lucide-react";
 
 export default function TodoItem({ todo, toggleTodoCompletion, toggleSubtodoCompletion, updateTodoName, updateSubtodoName }) {
+  // 確保 subtodos 是陣列
+  const safeSubtodos = todo.subtodos || [];
+
   return (
     <div className="space-y-2">
       {/* Main Todo */}
@@ -19,38 +22,40 @@ export default function TodoItem({ todo, toggleTodoCompletion, toggleSubtodoComp
         </button>
         <input
           type="text"
-          value={todo.name}
+          value={todo.name || ""} // 確保 name 不是 undefined
           onChange={(e) => updateTodoName(todo.id, e.target.value)}
           className="flex-1 bg-transparent text-gray-900 font-medium outline-none"
         />
       </div>
 
       {/* Subtodos */}
-      <div className="ml-9 space-y-2">
-        {todo.subtodos.map((subtodo) => (
-          <div
-            key={subtodo.id}
-            className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg border border-gray-200"
-          >
-            <button
-              onClick={() => toggleSubtodoCompletion(todo.id, subtodo.id)}
-              className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                subtodo.completed
-                  ? "bg-orange-500 border-orange-500 text-white"
-                  : "border-gray-300 hover:border-orange-500"
-              }`}
+      {safeSubtodos.length > 0 && (
+        <div className="ml-9 space-y-2">
+          {safeSubtodos.map((subtodo) => (
+            <div
+              key={subtodo.id}
+              className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg border border-gray-200"
             >
-              {subtodo.completed && <Check size={12} />}
-            </button>
-            <input
-              type="text"
-              value={subtodo.name}
-              onChange={(e) => updateSubtodoName(todo.id, subtodo.id, e.target.value)}
-              className="flex-1 bg-transparent text-gray-700 outline-none"
-            />
-          </div>
-        ))}
-      </div>
+              <button
+                onClick={() => toggleSubtodoCompletion(todo.id, subtodo.id)}
+                className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+                  subtodo.completed
+                    ? "bg-orange-500 border-orange-500 text-white"
+                    : "border-gray-300 hover:border-orange-500"
+                }`}
+              >
+                {subtodo.completed && <Check size={12} />}
+              </button>
+              <input
+                type="text"
+                value={subtodo.name || ""} // 確保 name 不是 undefined
+                onChange={(e) => updateSubtodoName(todo.id, subtodo.id, e.target.value)}
+                className="flex-1 bg-transparent text-gray-700 outline-none"
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

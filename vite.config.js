@@ -16,7 +16,7 @@ export default defineConfig({
       },
       // 如果你的API沒有 /api 前綴，可以代理所有請求
       // '/': {
-      //   target: 'http://localhost:3000',
+      //   target: 'http://localhost:8080',
       //   changeOrigin: true,
       //   secure: false,
       // }

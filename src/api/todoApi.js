@@ -1,13 +1,11 @@
 // src/api/todoApi.js
-
 import axios from 'axios';
 
-// 你後端的 Base URL (端口請依照你的實際後端設定)
 const API_BASE_URL = 'http://localhost:8080/rest/todo';
 
 export const fetchTodos = async () => {
   const response = await axios.get(`${API_BASE_URL}`);
-  return response.data.data;  // 注意你回傳格式 ApiResponse 裡的 data
+  return response.data.data;
 };
 
 export const fetchTodoById = async (todoId) => {

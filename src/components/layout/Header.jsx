@@ -1,5 +1,4 @@
-// src/components/Header.js
-
+// src/components/layout/Header.jsx
 import React from "react";
 
 export default function Header() {

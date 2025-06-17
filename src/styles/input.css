@@ -1,4 +1,5 @@
 /* src/input.css */
+@import "tailwindcss";
 
 /* 1. 引入 Tailwind 的核心指令 */
 @tailwind base;

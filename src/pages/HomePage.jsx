@@ -1,11 +1,11 @@
 // src/pages/HomePage.jsx
 import React from "react";
-import TimerDisplay from "../components/timer/TimerDisplay.jsx"; // 修正引入路徑，確保大小寫一致
-import TimerTabs from "../components/timer/TimerTabs.jsx";     // 修正引入路徑，確保大小寫一致
-import TodoList from "../components/todo/TodoList.jsx";       // 修正引入路徑，確保大小寫一致
-import AddTodoButton from "../components/todo/AddTodoButton.jsx"; // 修正引入路徑，確保大小寫一致
-import { usePomodoroTimer } from "../hooks/usePomodoroTimer.js";
-import { useTodos } from "../hooks/useTodos.js";
+import TimerDisplay from "../components/timer/TimerDispaly.jsx"; 
+import TimerTabs from "../components/timer/TimerTabs.jsx";     
+import TodoList from "../components/todo/TodoList.jsx";       
+import AddTodoButton from "../components/todo/AddTodoButton.jsx"; 
+import { usePomodoroTimer } from "../hooks/usePomodoroTimer.jsx";
+import { useTodos } from "../hooks/useTodos.jsx";
 
 export default function HomePage() {
   const {

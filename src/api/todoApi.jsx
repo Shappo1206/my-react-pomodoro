@@ -6,7 +6,7 @@ const API_BASE_URL = 'http://localhost:8080/rest/todo';
 // 確保 fetchTodos 函數返回正確格式
 export const fetchTodos = async () => {
   try {
-    const response = await fetch('http://localhost:8080/rest/todo');
+    const response = await fetch('http://localhost:8080/rest/todo/find');
     const data = await response.json();
     
     // 請確認這裡返回的格式
@@ -17,12 +17,13 @@ export const fetchTodos = async () => {
 };
 
 export const fetchTodoById = async (todoId) => {
-  const response = await axios.get(`${API_BASE_URL}/${todoId}`);
+  const response = await axios.get(`${API_BASE_URL}/find/${todoId}`);
   return response.data.data;
 };
 
 export const createTodo = async (todo) => {
-  const response = await axios.post(`${API_BASE_URL}`, todo);
+  console.log(todo);
+  const response = await axios.post(`${API_BASE_URL}/post`, todo);
   return response.data.data;
 };
 

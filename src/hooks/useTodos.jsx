@@ -7,9 +7,7 @@ export const useTodos = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 初始化讀取
-  useEffect(() => {
-    const getTodos = async () => {
+      const getTodos = async () => {
       try {
         setError(null);
         console.log('開始獲取待辦事項...');
@@ -78,6 +76,10 @@ export const useTodos = () => {
         setLoading(false);
       }
     };
+
+
+  // 初始化讀取
+  useEffect(() => {
     getTodos();
   }, []);
 
@@ -89,13 +91,14 @@ export const useTodos = () => {
     try {
       setError(null);
       const newTodo = { 
-        name: newTodoName.trim(), 
+        title: newTodoName.trim(), 
         completed: false, 
-        subtodos: [] 
+        subtodos: [],
       };
       
       const response = await createTodo(newTodo);
       console.log('創建待辦事項回應:', response);
+      getTodos();
       
       // 處理創建回應
       let createdTodo;
@@ -107,16 +110,17 @@ export const useTodos = () => {
         createdTodo = response;
       }
       
+      // formatted不知道在幹嘛
       // 確保有必要的屬性
-      const formattedTodo = {
-        ...createdTodo,
-        id: createdTodo.id || createdTodo._id || Math.random().toString(36).substr(2, 9),
-        name: createdTodo.name || createdTodo.title || newTodoName.trim(),
-        completed: Boolean(createdTodo.completed),
-        subtodos: Array.isArray(createdTodo.subtodos) ? createdTodo.subtodos : []
-      };
+      // const formattedTodo = {
+      //   ...createdTodo,
+      //   id: createdTodo.id || createdTodo._id || Math.random().toString(36).substr(2, 9),
+      //   title: createdTodo.name || createdTodo.title || newTodoName.trim(),
+      //   completed: Boolean(createdTodo.completed),
+      //   subtodos: Array.isArray(createdTodo.subtodos) ? createdTodo.subtodos : []
+      // };
       
-      setTodos((prevTodos) => [...prevTodos, formattedTodo]);
+      //setTodos((prevTodos) => [...prevTodos, formattedTodo]);
     } catch (err) {
       console.error('新增待辦事項失敗:', err);
       setError(err);

@@ -1,37 +1,51 @@
 // src/api/todoApi.js
-import axios from 'axios';
-
 const API_BASE_URL = 'http://localhost:8080/rest/todo';
 
-// 確保 fetchTodos 函數返回正確格式
+// 獲取所有待辦事項
 export const fetchTodos = async () => {
-  try {
-    const response = await fetch('http://localhost:8080/rest/todo');
-    const data = await response.json();
-    
-    // 請確認這裡返回的格式
-    return data; // 或者 return data.payload; 或者 return data.data;
-  } catch (error) {
-    throw error;
-  }
+  const response = await fetch(API_BASE_URL);
+  const data = await response.json();
+  return data;
 };
 
+// 根據 ID 獲取單個待辦事項
 export const fetchTodoById = async (todoId) => {
-  const response = await axios.get(`${API_BASE_URL}/${todoId}`);
-  return response.data.data;
+  const response = await fetch(`${API_BASE_URL}/${todoId}`);
+  const data = await response.json();
+  return data.data;
 };
 
+// 創建新的待辦事項
 export const createTodo = async (todo) => {
-  const response = await axios.post(`${API_BASE_URL}`, todo);
-  return response.data.data;
+  const response = await fetch(API_BASE_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(todo),
+  });
+  const data = await response.json();
+  return data.data;
 };
 
+// 更新待辦事項
 export const updateTodo = async (todoId, todo) => {
-  const response = await axios.put(`${API_BASE_URL}/put/${todo.todoId}`, todo);
-  return response.data;
+  const response = await fetch(`${API_BASE_URL}/put/${todo.todoId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(todo),
+  });
+  const data = await response.json();
+  return data;
 };
 
+// 刪除待辦事項
 export const deleteTodo = async (todoId) => {
-  const response = await axios.delete(`${API_BASE_URL}/rm/${todoId}`);
-  return response.data;
+  const response = await fetch(`${API_BASE_URL}/rm/${todoId}`, {
+    method: 'DELETE',
+  });
+  const data = await response.json();
+  return data;
 };

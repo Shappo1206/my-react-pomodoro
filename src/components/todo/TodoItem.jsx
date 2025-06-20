@@ -1,61 +1,62 @@
-// src/components/todo/TodoItem.jsx
 import React from "react";
-import { Check } from "lucide-react";
+import { X } from "lucide-react";
+import { FaCheck } from "react-icons/fa";
 
-export default function TodoItem({ todo, toggleTodoCompletion, toggleSubtodoCompletion, updateTodoName, updateSubtodoName }) {
-  // 確保 subtodos 是陣列
-  const safeSubtodos = todo.subtodos || [];
-
+export default function TodoItem({
+  todo,
+  toggleTodoCompletion,
+  updateTodoName,
+  removeTodo,
+}) {
   return (
-    <div className="space-y-2">
-      {/* Main Todo */}
-      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border-2 border-gray-200">
-        <button
-          onClick={() => toggleTodoCompletion(todo.id)}
-          className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${
-            todo.completed
-              ? "bg-orange-500 border-orange-500 text-white"
-              : "border-gray-300 hover:border-orange-500"
-          }`}
-        >
-          {todo.completed && <Check size={16} />}
-        </button>
-        <input
-          type="text"
-          value={todo.name || ""} // 確保 name 不是 undefined
-          onChange={(e) => updateTodoName(todo.id, e.target.value)}
-          className="flex-1 bg-transparent text-gray-900 font-medium outline-none"
-        />
-      </div>
+    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border-2 border-gray-200">
+      {/* 勾選按鈕 */}
+      <FaCheck
+        onClick={() => toggleTodoCompletion(todo.todoId)}
+        className={`w-6 h-6 flex-shrink-0 flex items-center justify-center rounded-sm border-2 transition-all duration-150 cursor-pointer ${
+          todo.completed
+            ? "bg-orange-100 border-orange-400 text-orange-600"
+            : "bg-white border-gray-300 text-gray-300"
+        }`}
+      />
 
-      {/* Subtodos */}
-      {safeSubtodos.length > 0 && (
-        <div className="ml-9 space-y-2">
-          {safeSubtodos.map((subtodo) => (
-            <div
-              key={subtodo.id}
-              className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg border border-gray-200"
-            >
-              <button
-                onClick={() => toggleSubtodoCompletion(todo.id, subtodo.id)}
-                className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                  subtodo.completed
-                    ? "bg-orange-500 border-orange-500 text-white"
-                    : "border-gray-300 hover:border-orange-500"
-                }`}
-              >
-                {subtodo.completed && <Check size={12} />}
-              </button>
-              <input
-                type="text"
-                value={subtodo.name || ""} // 確保 name 不是 undefined
-                onChange={(e) => updateSubtodoName(todo.id, subtodo.id, e.target.value)}
-                className="flex-1 bg-transparent text-gray-700 outline-none"
-              />
+      {/* 中間：標題 + 描述 */}
+      <div className="flex flex-col flex-grow items-start">
+        {/* 標題 + 番茄鐘 + 刪除 */}
+        <div className="flex w-full justify-between items-start">
+          <input
+            type="text"
+            value={todo.title || ""}
+            onChange={(e) => updateTodoName(todo.todoId, e.target.value)}
+            className={`bg-transparent outline-none transition-all duration-150 w-full text-lg ${
+              todo.completed ? "line-through text-gray-400" : "text-gray-900"
+            }`}
+          />
+
+          <div className="flex items-center gap-2 ml-3">
+            {/* ✅ 顯示番茄進度 */}
+            <div className="flex items-center gap-1 text-sm whitespace-nowrap">
+              <span className="text-base">🍅</span>
+              <span>{todo.completedPomodoros || 0} / {todo.estimatedPomodoros || 0}  </span>
             </div>
-          ))}
+
+            <button
+              onClick={() => removeTodo(todo.todoId)}
+              className="text-gray-400 hover:text-red-500 transition-colors"
+              title="刪除"
+            >
+              <X size={20} />
+            </button>
+          </div>
         </div>
-      )}
+
+        {/* 描述文字 */}
+        {todo.description && (
+          <div className="text-sm text-gray-500 mt-1 whitespace-pre-line leading-relaxed">
+            {todo.description}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -34,30 +34,20 @@ export const useTodos = () => {
   }, []);
 
   // ===== 新增待辦事項 =====
-  const addTodo = async (newTodoName, description = '', estimatePomodoroCount = 0) => {
-    if (!newTodoName || newTodoName.trim() === '') {
-      return;
-    }
+const addTodo = async (todo) => {
+  if (!todo.title || todo.title.trim() === '') return;
 
-    try {
-      setError(null);
-
-      const newTodo = {
-        title: newTodoName.trim(),
-        description: description.trim(),
-        completed: false,
-        estimatePomodoroCount: estimatePomodoroCount,
-      };
-
-      await createTodo(newTodo);
-      // 重新載入所有資料
-      await getTodos();
-
-    } catch (err) {
-      console.error('新增待辦事項失敗:', err);
-      setError(err);
-    }
+  const newTodo = {
+    title: todo.title.trim(),
+    description: todo.description?.trim() || '',
+    estimatePomodoroCount: todo.estimatePomodoroCount || 1,
+    completed: false,
   };
+
+  await createTodo(newTodo);
+  await getTodos();
+};
+
 
   // ===== 切換待辦事項完成狀態 =====
   const toggleTodoCompletion = async (todoId) => {

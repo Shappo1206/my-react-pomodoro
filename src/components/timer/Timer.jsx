@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Pause, Play } from "lucide-react";
-import useTimer from "../../hooks/UseTimer";
 
 export default function Timer({ onComplete }) {
   const {

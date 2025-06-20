@@ -1,29 +1,33 @@
-// src/components/Todos.js
-
+// src/components/Todos.jsx
 import React, { useState } from 'react';
 import { Check, Plus, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useTodos } from '../../hooks/useTodos';
+import TodoList from './todo/TodoList';
+import AddTodoButton from './todo/AddTodoButton'; 
 
 export default function Todos() {
-  const { todos, loading, create, update, remove } = useTodos();
-  const [newTitle, setNewTitle] = useState('');
+  const {
+    todos,
+    loading,
+    addTodo,
+    updateTodoTitle,
+    removeTodo,
+    toggleTodoCompletion,
+  } = useTodos();
+
+  // const [newTitle, setNewTitle] = useState('');
 
   if (loading) return <div>Loading...</div>;
 
-  const handleAdd = async () => {
-    if (!newTitle.trim()) return;
-    await create({ title: newTitle });
-    setNewTitle('');
-  };
-
-  const handleDelete = async (id) => {
-    await remove(id);
-  };
+  // const handleAdd = async () => {
+  //   if (!newTitle.trim()) return;
+  //   await addTodo(newTitle); // 這裡依你 hook 的命名
+  //   setNewTitle('');
+  // };
 
   return (
     <div className="p-4">
-      <h2 className="text-xl mb-4">待辦清單</h2>
-
+      {/* 新增輸入區
       <div className="mb-4 flex gap-2">
         <input
           className="border p-2"
@@ -34,18 +38,19 @@ export default function Todos() {
         <button onClick={handleAdd} className="bg-blue-500 text-white p-2 rounded">
           新增
         </button>
-      </div>
+      </div> */}
 
-      <ul className="space-y-2">
-        {todos.map((todo) => (
-          <li key={todo.todoId} className="flex justify-between items-center border p-2 rounded">
-            <span>{todo.title}</span>
-            <button onClick={() => handleDelete(todo.todoId)}>
-              <Trash2 className="text-red-500" />
-            </button>
-          </li>
-        ))}
-      </ul>
+      {/* ✅ 加入新版的 Modal 新增按鈕 */}
+      <AddTodoButton onAddTodo={addTodo} />
+
+      {/* 交給 TodoList 負責畫面渲染 */}
+      <TodoList
+        todos={todos}
+        completedPomodoros={0} // 或傳入實際值
+        toggleTodoCompletion={toggleTodoCompletion}
+        updateTodoName={updateTodoTitle}
+        removeTodo={removeTodo}
+      />
     </div>
   );
 }

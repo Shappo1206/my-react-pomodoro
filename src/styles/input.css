@@ -20,11 +20,24 @@ body {
   }
 }
 
-/* 4. 如果您需要覆蓋某些 Tailwind 的預設樣式，但這種情況比較少見 */
-/* 盡量還是透過修改 tailwind.config.js 或直接使用 utility class 覆蓋 */
-/* 範例 (不建議常用): */
-/*
-h1 {
-  @apply text-5xl font-extrabold;
+/* 自訂 checkbox 勾選樣式
+@layer components {
+  .custom-checkbox {
+    @apply appearance-none w-5 h-5 border-2 border-gray-300 rounded-sm cursor-pointer relative;
+  }
+
+  .custom-checkbox:checked {
+    @apply bg-green-500 border-green-500;
+  }
+
+  .custom-checkbox:checked::after {
+    content: '✔';
+    color: white;
+    position: absolute;
+    top: -2px;
+    left: 2px;
+    font-size: 14px;
+  }
 }
-*/
+ */
+

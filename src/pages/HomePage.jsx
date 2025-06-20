@@ -25,10 +25,8 @@ export default function HomePage() {
     error,
     addTodo,
     toggleTodoCompletion,
-    toggleSubtodoCompletion,
     updateTodoName,
-    updateSubtodoName,
-    getCompletedSubtodos,
+    removeTodo,
   } = useTodos();
 
   if (loading) return <div className="text-center mt-10">載入中...</div>;
@@ -66,10 +64,8 @@ export default function HomePage() {
               todos={safeTodos}
               completedPomodoros={completedPomodoros}
               toggleTodoCompletion={toggleTodoCompletion}
-              toggleSubtodoCompletion={toggleSubtodoCompletion}
               updateTodoName={updateTodoName}
-              updateSubtodoName={updateSubtodoName}
-              getCompletedSubtodos={getCompletedSubtodos}
+              removeTodo={removeTodo}
             />
             <AddTodoButton onAddTodo={addTodo} />
           </div>

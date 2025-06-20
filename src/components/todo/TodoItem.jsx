@@ -1,5 +1,5 @@
 import React from "react";
-import { X } from "lucide-react";
+import { X, Ellipsis } from "lucide-react";
 import { FaCheck } from "react-icons/fa";
 
 export default function TodoItem({
@@ -34,7 +34,7 @@ export default function TodoItem({
           />
 
           <div className="flex items-center gap-2 ml-3">
-            {/* ✅ 顯示番茄進度 */}
+            {/* 顯示番茄進度 */}
             <div className="flex items-center gap-1 text-sm whitespace-nowrap">
               <span className="text-base">🍅</span>
               <span>{todo.completedPomodoros || 0} / {todo.estimatedPomodoros || 0}  </span>
@@ -42,10 +42,18 @@ export default function TodoItem({
 
             <button
               onClick={() => removeTodo(todo.todoId)}
-              className="text-gray-400 hover:text-red-500 transition-colors"
+              className="text-gray-900 hover:text-red-500 transition-colors"
               title="刪除"
             >
               <X size={20} />
+            </button>
+
+            <button
+              onClick={() => updateTodoTitle(todo.todoId)}
+              className="text-gray-900 hover:text-red-500 transition-colors"
+              title="修改"
+            >
+              <Ellipsis  size={20}/>            
             </button>
           </div>
         </div>

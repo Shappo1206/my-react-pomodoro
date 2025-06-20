@@ -3,7 +3,7 @@ const API_BASE_URL = 'http://localhost:8080/rest/todo';
 
 // 獲取所有待辦事項
 export const fetchTodos = async () => {
-  const response = await fetch(API_BASE_URL);
+  const response = await fetch(`${API_BASE_URL}`);
   const data = await response.json();
   console.log('取得 todos 資料:', data); // 加這行
   return data.payload;
@@ -11,7 +11,7 @@ export const fetchTodos = async () => {
 
 // 根據 ID 獲取單個待辦事項
 export const fetchTodoById = async (todoId) => {
-  const response = await fetch(`${API_BASE_URL}/${todoId}`);
+  const response = await fetch(`${API_BASE_URL}/find/${todoId}`);
   const data = await response.json();
   return data.data;
 };

@@ -40,7 +40,7 @@ export default function Todos() {
         </button>
       </div> */}
 
-      {/* ✅ 加入新版的 Modal 新增按鈕 */}
+      {/* 加入新版的 Modal 新增按鈕 */}
       <AddTodoButton onAddTodo={addTodo} />
 
       {/* 交給 TodoList 負責畫面渲染 */}
@@ -48,7 +48,7 @@ export default function Todos() {
         todos={todos}
         completedPomodoros={0} // 或傳入實際值
         toggleTodoCompletion={toggleTodoCompletion}
-        updateTodoName={updateTodoTitle}
+        updateTodoTitle={updateTodoTitle}
         removeTodo={removeTodo}
       />
     </div>

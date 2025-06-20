@@ -10,7 +10,7 @@ export default function TodoList({
   completedPomodoros,
   toggleTodoCompletion,
   updateTodoName,
-  removeTodo, // ✅ 接收 removeTodo
+  removeTodo, //接收 removeTodo
 }) {
   return (
     <div className="bg-white rounded-3xl p-6 shadow-sm border-2 border-gray-200">

@@ -20,7 +20,7 @@ function RightContent() {
           name: todo.title,
           description: todo.description,
           completed: todo.completed === 1,
-          estimatePomodoro: todo.estimate_pomodoro,
+          estimatePomodoro: todo.estimatePomodoroCount,
           subtasks: [
             { id: `${todo.todo_id}-1`, name: "項目1", completed: false },
             { id: `${todo.todo_id}-2`, name: "項目2", completed: false },

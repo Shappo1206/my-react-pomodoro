@@ -25,7 +25,7 @@ export default function HomePage() {
     error,
     addTodo,
     toggleTodoCompletion,
-    updateTodoName,
+    updateTodoTitle,
     removeTodo,
   } = useTodos();
 
@@ -64,7 +64,7 @@ export default function HomePage() {
               todos={safeTodos}
               completedPomodoros={completedPomodoros}
               toggleTodoCompletion={toggleTodoCompletion}
-              updateTodoName={updateTodoName}
+              updateTodoTitle={updateTodoTitle}
               removeTodo={removeTodo}
             />
             <AddTodoButton onAddTodo={addTodo} />

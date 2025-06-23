@@ -6,12 +6,13 @@ export default function AddTodoButton({ onAddTodo }) {
   const [description, setDescription] = useState("");
   const [estimate, setEstimate] = useState("");
 
+  // 送出新增表單函式
   const handleSubmit = () => {
     if (title.trim() !== "") {
       const newTodo = {
         title: title.trim(),
         description: description.trim(),
-        estimatedPomodoros: estimate,
+        estimatePomodoroCount: estimate,
       };
       onAddTodo(newTodo);
       setTitle("");

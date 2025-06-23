@@ -1,4 +1,5 @@
 // src/components/todo/TodoList.jsx
+// 渲染 todo 清單，每項交由 TodoItem 呈現
 import React from "react";
 import { Plus, MoreHorizontal } from "lucide-react";
 import TodoItem from "./TodoItem.jsx";
@@ -9,9 +10,11 @@ export default function TodoList({
   todos,
   completedPomodoros,
   toggleTodoCompletion,
-  updateTodoName,
-  removeTodo, //接收 removeTodo
-}) {
+  updateTodoTitle,
+  removeTodo, //接收removeTodo
+  selectedTodoId,
+  setSelectedTodoId,
+  }) {
   return (
     <div className="bg-white rounded-3xl p-6 shadow-sm border-2 border-gray-200">
       {/* Header */}
@@ -38,8 +41,13 @@ export default function TodoList({
               key={todo.todoId}
               todo={todo}
               toggleTodoCompletion={toggleTodoCompletion}
-              updateTodoName={updateTodoName}
+              updateTodoTitle={updateTodoTitle}
               removeTodo={removeTodo}
+              isSelected={selectedTodoId === todo.todoId}  
+              onSelect={(id) => {
+                console.log('Selecting todo:', id);
+                setSelectedTodoId(id);
+              }}
             />
           ))
         ) : (

@@ -27,6 +27,7 @@ export const createTodo = async (todo) => {
   });
   const data = await response.json();
   return data.data;
+  fetchTodos();
 };
 
 // 更新待辦事項

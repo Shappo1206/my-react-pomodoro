@@ -1,4 +1,4 @@
-// src/hooks/useTodos.js - 最簡化版本
+// src/hooks/useTodos.js - 添加選中狀態管理
 import { useState, useEffect } from "react";
 import { fetchTodos, createTodo, updateTodo, deleteTodo } from "../api/todoApi";
 
@@ -34,20 +34,43 @@ export const useTodos = () => {
   }, []);
 
   // ===== 新增待辦事項 =====
-const addTodo = async (todo) => {
-  if (!todo.title || todo.title.trim() === '') return;
+  const addTodo = async (todo) => {
+    if (!todo.title || todo.title.trim() === '') return;
 
-  const newTodo = {
-    title: todo.title.trim(),
-    description: todo.description?.trim() || '',
-    estimatePomodoroCount: todo.estimatePomodoroCount || 1,
-    completed: false,
+    const newTodo = {
+      title: todo.title.trim(),
+      description: todo.description?.trim() || '',
+      estimatePomodoroCount: todo.estimatePomodoroCount || 1,
+      completed: false,
+    };
+
+    try {
+      // 獲取後端返回的完整 todo 物件（包含 todoId）
+      const createdTodo = await createTodo(newTodo);
+      
+      console.log('新建的 todo:', createdTodo); // 除錯用
+      
+      // 方案 1: 直接將新 todo 加入現有狀態（推薦）
+      if (createdTodo && createdTodo.todoId) {
+        setTodos(prevTodos => [...prevTodos, createdTodo]);
+        
+        // 自動選中新建的任務
+        setSelectedTodoId(createdTodo.todoId);
+        
+        return createdTodo; // 返回新建的 todo
+      } else {
+        // 如果沒有返回 todoId，fallback 到重新獲取所有資料
+        console.warn('創建 todo 沒有返回 todoId，重新獲取所有資料');
+        await getTodos();
+      }
+      
+    } catch (error) {
+      console.error('新增 todo 失敗:', error);
+      // 錯誤處理：可以顯示錯誤訊息給用戶
+      // 或者嘗試重新獲取資料
+      await getTodos();
+    }
   };
-
-  await createTodo(newTodo);
-  await getTodos();
-};
-
 
   // ===== 切換待辦事項完成狀態 =====
   const toggleTodoCompletion = async (todoId) => {
@@ -145,6 +168,12 @@ const addTodo = async (todo) => {
   const removeTodo = async (todoId) => {
     try {
       setError(null);
+      
+      // 如果刪除的是當前選中的任務，清除選中狀態
+      if (selectedTodoId === todoId) {
+        setSelectedTodoId(null);
+      }
+      
       await deleteTodo(todoId);
       await getTodos(); // Refresh the list
     } catch (err) {
@@ -153,11 +182,17 @@ const addTodo = async (todo) => {
     }
   };
 
+  // ===== 獲取當前選中的任務 =====
+  const getSelectedTodo = () => {
+    return todos.find(todo => todo.todoId === selectedTodoId) || null;
+  };
+
   // ===== 回傳所有狀態和函數 =====
   return {
     todos,
     loading,
     error,
+    getSelectedTodo,
     addTodo,
     toggleTodoCompletion,
     updateTodoTitle,
